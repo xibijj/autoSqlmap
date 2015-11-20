@@ -90,4 +90,4 @@ class myproxy(ProxyRequestHandler):
 		#通过类传参，把payload传入检测队列
 		i = SqlmapAPIWrapper(fname,payload)
 		if i.scan_start():
-			self.q.put((fname,i.taskid,payload,time.time()))
+			self.q.put((fname,i.taskid,payload,time.time(),request))
