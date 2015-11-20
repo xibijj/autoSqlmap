@@ -51,15 +51,21 @@ class myproxy(ProxyRequestHandler):
 			request = req_header_text + '\n'
 			keystr = req.path
 		else:
-			request = req_header_text + '\n' + req_body
-			a = req_body
-			b = a.split('&')
-			c = []
-			for i in b:
-				if i.find('=') > 0:
-					arr = i.split('=')
-					c.append(arr[0])
-					keystr = "%s%s"%(req.path,''.join(sorted(c)))
+		#POST
+			if req_body:
+				request = req_header_text + '\n' + req_body
+				a = req_body
+				#分割post data参数
+				b = a.split('&')
+				c = []
+				for i in b:
+					if i.find('=') > 0:
+						arr = i.split('=')
+						c.append(arr[0])
+						keystr = "%s/%s"%(req.path,''.join(sorted(c)))
+				else:
+					request = req_header_text + '\n'
+					keystr = req.path
 			else:
 				request = req_header_text + '\n'
 				keystr = req.path
@@ -68,7 +74,7 @@ class myproxy(ProxyRequestHandler):
 		#print req_body
 
 		#avoid same params multi test
-		sig = self.make_sig(req.path)
+		sig = self.make_sig(keystr)
 		if self.check_history(sig):
 			return
 
@@ -90,4 +96,4 @@ class myproxy(ProxyRequestHandler):
 		#通过类传参，把payload传入检测队列
 		i = SqlmapAPIWrapper(fname,payload)
 		if i.scan_start():
-			self.q.put((fname,i.taskid,payload,time.time(),request))
+			self.q.put((fname,i.taskid,payload,time.time()))
