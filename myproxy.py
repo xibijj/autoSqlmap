@@ -53,8 +53,8 @@ class myproxy(ProxyRequestHandler):
 		else:
 		#POST
 			if req_body:
-				request = req_header_text + '\n' + req_body
-				a = req_body
+				request = req_header_text + '\n' + str(req_body)
+				a = str(req_body)
 				#分割post data参数
 				b = a.split('&')
 				c = []
@@ -63,11 +63,8 @@ class myproxy(ProxyRequestHandler):
 						arr = i.split('=')
 						c.append(arr[0])
 						keystr = "%s/%s"%(req.path,''.join(sorted(c)))
-				else:
-					request = req_header_text + '\n'
-					keystr = req.path
 			else:
-				request = req_header_text + '\n'
+				request = req_header_text + '\n' + str(req_body)
 				keystr = req.path
 		
 		#post请求时把postdata放入检测
