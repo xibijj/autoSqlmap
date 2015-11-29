@@ -1,7 +1,9 @@
 #autoSqlmap
 
 ###
-在linux系统上支持较好，windows有坑 :p
+未解决问题：
+不能自定义指定ip地址做为监听地址,算是坑吧!(求大神指点)
+
 ###
 
 autoSqlmap is a simple http(s) proxy with python based sqlmapapi wrapper.
