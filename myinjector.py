@@ -14,6 +14,14 @@ def with_color(c, s):
 		return "%s" % s
 	else:
 		return "\x1b[%dm%s\x1b[0m" % (c, s)
+		
+def writelog(log,name):
+    try:
+        fp = open('%s_Sqli_ok.log'%name,'a')
+        fp.write(log+"\n")
+        fp.close()
+    except:
+        return False
 
 class myinjector():
 	def run(self):
@@ -36,7 +44,9 @@ class myinjector():
 
 				if injector.vulnerable():
 					print with_color(32, "#%s [VulUrl] %s"%(time.strftime("%H:%M:%S"),payload['url']))
-					print with_color(32, "#%s [Exploit] sqlmap -r %s"%(time.strftime("%H:%M:%S"), config.save_path + '/' + fname))
+					print with_color(32, "#%s [Exploit] sqlmap -r %s -v 3 --level 3"%(time.strftime("%H:%M:%S"), config.save_path + '/' + fname))
+					vlu_str = "#%s [VulUrl] %s \n#%s [Exploit] sqlmap -r %s -v 3 --level 3"%(time.strftime("%H:%M:%S"),payload['url'],time.strftime("%H:%M:%S"), config.save_path + '/' + fname)
+					writelog(vlu_str,time.strftime("%Y-%m-%d"))
 					sys.stdout.flush()
 					injector.delete()
 				else:

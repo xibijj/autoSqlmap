@@ -63,9 +63,11 @@ class myproxy(ProxyRequestHandler):
 						arr = i.split('=')
 						c.append(arr[0])
 						keystr = "%s/%s"%(req.path,''.join(sorted(c)))
-			else:
-				request = req_header_text + '\n' + str(req_body)
-				keystr = req.path
+						
+		#修改某些Post请求为空时出错
+		#else:
+			request = req_header_text + '\n' + str(req_body)
+			keystr = req.path
 		
 		#post请求时把postdata放入检测
 		#print req_body
@@ -86,9 +88,9 @@ class myproxy(ProxyRequestHandler):
 		#print req.headers.get('Cookie')
 
 		if req_body:
-			payload = {'url':req.path,'data':req_body,'cookie':req.headers.get('Cookie')}
+			payload = {'url':req.path, 'data':req_body, 'cookie':req.headers.get('Cookie'), 'agent':req.headers.get('User-Agent'), 'level':3}
 		else:
-			payload = {'url':req.path,'cookie':req.headers.get('Cookie')}
+			payload = {'url':req.path, 'cookie':req.headers.get('Cookie'), 'agent':req.headers.get('User-Agent'), 'level':3}
 		
 		#通过类传参，把payload传入检测队列
 		i = SqlmapAPIWrapper(fname,payload)
