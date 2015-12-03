@@ -85,12 +85,11 @@ class myproxy(ProxyRequestHandler):
 		f.write(request)
 		f.close()
 		
-		#print req.headers.get('Cookie')
-
+		#sqlmap参数请修改config.py的sqlmap_options
 		if req_body:
-			payload = {'url':req.path, 'data':req_body, 'cookie':req.headers.get('Cookie'), 'agent':req.headers.get('User-Agent'), 'level':3}
+			payload = {'url':req.path, 'data':req_body, 'cookie':req.headers.get('Cookie'), 'agent':req.headers.get('User-Agent')}
 		else:
-			payload = {'url':req.path, 'cookie':req.headers.get('Cookie'), 'agent':req.headers.get('User-Agent'), 'level':3}
+			payload = {'url':req.path, 'cookie':req.headers.get('Cookie'), 'agent':req.headers.get('User-Agent')}
 		
 		#通过类传参，把payload传入检测队列
 		i = SqlmapAPIWrapper(fname,payload)

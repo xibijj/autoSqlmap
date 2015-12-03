@@ -17,9 +17,11 @@ sqlmap_options = {}
 sqlmap_options['threads'] = 3
 
 #sqlmap_options['proxyFile'] = ''
-sqlmap_options['dbms'] = 'mysql'
+#sqlmap_options['dbms'] = 'mysql'
 #sqlmap_options['hpp'] = True
 sqlmap_options['timeout'] = 5
+sqlmap_options['risk'] = 3
+sqlmap_options['level'] = 3
 
 queue = None
 
