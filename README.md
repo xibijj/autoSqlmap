@@ -3,10 +3,7 @@
 ###
 未解决问题：
 不能自定义指定ip地址做为监听地址,算是坑吧!(求大神指点)
-目前解决办法：
-```
-需要修改python目录下/lib/SocketServer.py第402行 def \_\_init\_\_ 新添加：
-```
+默认情况autosqlmap因为代码问题，获取最后的网卡地址（ipv6）目前解决办法是修改python目录下/lib/SocketServer.py第402行 def \_\_init\_\_ 新添加：
 ```
 if len(server_address[0]) ==0:
    self.address_family = 2
