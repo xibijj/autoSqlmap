@@ -14,6 +14,7 @@ import config
 class myproxy(ProxyRequestHandler):
 
 	query_log = {}
+	hostname = ""
 
 	def check_history(self, key):
 		try:
@@ -30,6 +31,7 @@ class myproxy(ProxyRequestHandler):
 		hostname+path+querykey
 		'''
 		parse = urlparse.urlparse(url)
+		self.hostname = parse.hostname
 		return md5.md5(parse.hostname+parse.path+''.join(sorted(urlparse.parse_qs(parse.query).keys()))).hexdigest()
 
 	def save_handler(self, req, req_body, res, res_body):
@@ -94,4 +96,4 @@ class myproxy(ProxyRequestHandler):
 		#通过类传参，把payload传入检测队列
 		i = SqlmapAPIWrapper(fname,payload)
 		if i.scan_start():
-			self.q.put((fname,i.taskid,payload,time.time()))
+			self.q.put((fname,i.taskid,payload,time.time(),self.hostname))

@@ -17,7 +17,7 @@ def with_color(c, s):
 		
 def writelog(log,name):
     try:
-        fp = open('%s_Sqli_ok.log'%name,'a')
+        fp = open('%s_Sqli_vlu.log'%name,'a')
         fp.write(log+"\n")
         fp.close()
     except:
@@ -27,7 +27,7 @@ class myinjector():
 	def run(self):
 		while True:
 			try:
-				(fname,taskid,payload,start_time) = config.queue.get(timeout=1)
+				(fname,taskid,payload,start_time,hostname) = config.queue.get(timeout=1)
 				#print (fname,taskid,payload,start_time)
 				
 				injector = SqlmapAPIWrapper(fname,payload)
@@ -38,7 +38,7 @@ class myinjector():
 					if time.time()-start_time>config.sqlmap_tasktimeout:
 						injector.clear()
 						continue
-					config.queue.put((fname,taskid,payload,start_time))
+					config.queue.put((fname,taskid,payload,start_time,hostname))
 					time.sleep(5)
 					continue
 
@@ -46,7 +46,7 @@ class myinjector():
 					print with_color(32, "#%s [VulUrl] %s"%(time.strftime("%H:%M:%S"),payload['url']))
 					print with_color(32, "#%s [Exploit] sqlmap -r %s -v 3 --level 3"%(time.strftime("%H:%M:%S"), config.save_path + '/' + fname))
 					vlu_str = "#%s [VulUrl] %s \n#%s [Exploit] sqlmap -r %s -v 3 --level 3"%(time.strftime("%H:%M:%S"),payload['url'],time.strftime("%H:%M:%S"), config.save_path + '/' + fname)
-					writelog(vlu_str,time.strftime("%Y-%m-%d"))
+					writelog(vlu_str,"%s_%s"%(hostname,time.strftime("%Y-%m-%d")))
 					sys.stdout.flush()
 					injector.delete()
 				else:

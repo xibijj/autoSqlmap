@@ -3,6 +3,11 @@
 ###
 未解决问题：
 不能自定义指定ip地址做为监听地址,算是坑吧!(求大神指点)
+目前解决办法：
+需要修改python目录下/lib/SocketServer.py第402行 def __init__ ，
+新添加：
+        if len(server_address[0]) ==0:
+            self.address_family = 2
 
 ###
 
